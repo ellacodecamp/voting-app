@@ -1,0 +1,32 @@
+{
+  "name": "voting-app",
+  "version": "0.0.1",
+  "description": "Voting App for FCC",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ellacodecamp/voting-app"
+  },
+  "scripts": {
+    "start": "node ./server.js"
+  },
+  "author": "Ella Baron",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^1.3.2",
+    "cookie-parser": "^1.4.3",
+    "debug": "^2.2.0",
+    "dotenv": "^2.0.0",
+    "express": "^4.14.0",
+    "express-session": "^1.14.1",
+    "mongoose": "^4.6.4",
+    "morgan": "^1.7.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^4.0.0",
+    "pug": "^2.0.0-beta6",
+    "serve-favicon": "^2.3.0"
+  }
+}
