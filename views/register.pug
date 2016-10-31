@@ -5,12 +5,17 @@ block content
     h1 Register Page
     p.lead Say something worthwhile here.
     br
-    form(role='form', action="/register",method="post", style='max-width: 300px;')
+    form(role='form', action="/register",method="post", style='max-width: 400px;')
       .form-group
         input.form-control(type='text', name="username", placeholder='Enter Username')
+      .form-group
+        input.form-control(type='text', name="displayName", placeholder='Enter Your Name')
       .form-group
         input.form-control(type='password', name="password", placeholder='Password')
       button.btn.btn-default(type='submit') Submit
       span &nbsp;
       a(href='/')
         button.btn.btn-primary(type="button") Cancel
+      span &nbsp;
+      a(href='/auth/github')
+        button.btn.btn-default(type='button') Sign up with GitHub

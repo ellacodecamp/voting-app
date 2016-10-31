@@ -1,6 +1,6 @@
 'use strict';
 
-var debug = require('debug')('VotingApp:connection');
+var debug = require('debug')('VotingApp:models:connection');
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 var mongoUrl = process.env.MONGO_URI;

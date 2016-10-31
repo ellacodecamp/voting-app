@@ -6,11 +6,10 @@ block content
     br
     a(href="/register") Register
   if (user)
-    p You are currently logged in as #{user.username}
+    if (user.username)
+      p You are currently logged in as #{user.username} with display name #{user.displayName}
+    else if (user.githubId)
+      p You are currently logged as github user with id #{user.githubId} with display name #{user.displayName}
+    else
+      p You are logged in, but I do not know how. Please, go away!
     a(href="/logout") Logout
-
-//- extends layout
-
-//- block content
-//-   h1= title
-//-   p Welcome to #{title}

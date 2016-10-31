@@ -1,5 +1,6 @@
 'use strict';
 
+var debug = require("debug")("VotingApp:app:app");
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -11,10 +12,11 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var GitHubStrategy = require('passport-github2').Strategy;
 var flash = require('connect-flash');
 var MongoStore = require('connect-mongo')(session);
 
-var connection = require('./connection');
+var connection = require('../models/connection');
 var routes = require('../routes/index');
 var users = require('../routes/users');
 
@@ -43,8 +45,8 @@ app.use(session({
   proxy : true,
   cookie: {secure: true}
 }));
-app.use(passport.initialize());
 app.use(flash());
+app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, '../public')));
@@ -56,8 +58,15 @@ app.use('/users', users);
 // passport config
 var Account = require('../models/account');
 passport.use(new LocalStrategy(Account.authenticate()));
-passport.serializeUser(Account.serializeUser());
-passport.deserializeUser(Account.deserializeUser());
+passport.use(new GitHubStrategy({
+		clientID: process.env.GITHUB_KEY,
+		clientSecret: process.env.GITHUB_SECRET,
+		callbackURL: process.env.APP_URL + 'auth/github/callback'
+  },
+  Account.authenticateGitHub())
+);
+passport.serializeUser(Account.serializeGitHubUser());
+passport.deserializeUser(Account.deserializeGitHubUser());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -74,7 +83,7 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     console.log("handling error in dev; rendering error with stacktrace");
-    // console.log(req);
+    console.log(err);
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,

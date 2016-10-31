@@ -3,7 +3,7 @@
 var debug = require('debug')('VotingApp:routes:index');
 var express = require('express');
 var passport = require('passport');
-var connection = require('../app/connection');
+var connection = require('../models/connection');
 var Account = require('../models/account');
 var router = express.Router();
 
@@ -20,7 +20,8 @@ router.get('/register', function(req, res) {
 
 router.post('/register', function(req, res, next) {
   debug("serving POST /register; returning register on failure, redirect to / on success");
-  Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
+  var displayName = req.body.displayName || req.body.username;
+  Account.register(new Account({ username : req.body.username, displayName: displayName }), req.body.password, function(err, account) {
     if (err) {
       debug(account);
       return res.render('register', { error : err.message });
@@ -52,6 +53,18 @@ router.get('/logout', function(req, res, next) {
 router.get('/ping', function(req, res){
   debug("serving GET /ping; returning pong");
   res.status(200).send("pong!");
+});
+
+router.get('/auth/github', passport.authenticate('github', { failureRedirect: '/login', failureFlash: true }), function(req, res, next) {
+  debug("serving GET /auth/github");
+  res.redirect('/');
+});
+
+router.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), function(req, res, next) {
+  debug("serving GET /auth/github/callback");
+  // successful authentication
+  // res.json(req.user);
+  res.redirect('/');
 });
 
 module.exports = router;

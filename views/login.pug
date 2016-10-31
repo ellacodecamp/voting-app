@@ -5,7 +5,7 @@ block content
     h1 Login Page
     p.lead Say something worthwhile here.
     br
-    form(role='form', action="/login",method="post", style='max-width: 300px;')
+    form(role='form', action="/login",method="post", style='max-width: 400px;')
       .form-group
         input.form-control(type='text', name="username", placeholder='Enter Username')
       .form-group
@@ -14,3 +14,6 @@ block content
       span &nbsp;
       a(href='/')
         button.btn.btn-primary(type="button") Cancel
+      span &nbsp;
+      a(href='/auth/github')
+        button.btn.btn-default(type='button') Sign in with GitHub
